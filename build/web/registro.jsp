@@ -42,7 +42,7 @@
     <h2>Registro de Vehículo - UTP</h2>
     <form action="RegistroServlet" method="post">
         <input type="text" name="nombres" placeholder="Nombres Completos" required />
-        <input type="text" name="dni" placeholder="DNI" maxlength="8" pattern="\\d{8}" required />
+        <input typgit e="text" name="dni" placeholder="DNI" maxlength="8" pattern="\\d{8}" required />
         <input type="text" name="telefono" placeholder="Teléfono" required />
         <input type="email" name="correo" placeholder="Correo institucional"  required />
         <input type="text" name="placa" placeholder="Placa del Vehículo" required />
@@ -67,6 +67,8 @@
         </select>
 
         <button type="submit">Registrar</button>
+        <p>Hola BRO</p>
+        
     </form>
 </div>
 </body>
