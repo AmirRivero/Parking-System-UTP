@@ -1,16 +1,160 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>James Williamson - Permits Overview</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        h2 {
+            color: #3498db;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        
+        .search-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .permits-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .permits-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background-color: #3498db;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .permits-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .permits-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .status-active {
+            color: #27ae60;
+            font-weight: 500;
+        }
+        
+        .status-expired {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        
+        .more-link {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .more-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>James Williamson</h1>
+        <h2>Overview of all Permits</h2>
+        
+        <div class="search-section">
+            <h3>Search</h3>
+            <!-- Aquí irían los campos de búsqueda -->
+        </div>
+        
+        <table class="permits-table">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Vehicle No.</th>
+                    <th>Area Type</th>
+                    <th>Issue Date</th>
+                    <th>Expiration Date</th>
+                    <th>More</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="status-active">Active</td>
+                    <td>VH43L10</td>
+                    <td>P-kselder (Plads nr 2155) Standard Permit</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td><a href="#" class="more-link">Details</a></td>
+                </tr>
+                <tr>
+                    <td class="status-expired">Expired</td>
+                    <td>KLH3 2341</td>
+                    <td>2 timer parkering Subscription</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td><a href="#" class="more-link">Details</a></td>
+                </tr>
+                <tr>
+                    <td class="status-active">Active</td>
+                    <td>HXKL 9343</td>
+                    <td>Oronjordskollegiet Sublicense</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td><a href="#" class="more-link">Details</a></td>
+                </tr>
+                <tr>
+                    <td class="status-expired">Expired</td>
+                    <td>VH43L10</td>
+                    <td>P-kselder (Plads nr 2155) Subscription</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td><a href="#" class="more-link">Details</a></td>
+                </tr>
+                <tr>
+                    <td class="status-active">Active</td>
+                    <td>KLH3 2341</td>
+                    <td>2 timer parkering Limited Permission</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td><a href="#" class="more-link">Details</a></td>
+                </tr>
+                <tr>
+                    <td class="status-active">Active</td>
+                    <td>KLH3 2341</td>
+                    <td>2 timer parkering Limited Streets</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td>21:40 - 24/04/2024</td>
+                    <td><a href="#" class="more-link">Details</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
 </html>
