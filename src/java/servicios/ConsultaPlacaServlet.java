@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 @WebServlet("/consultaPlaca")
 public class ConsultaPlacaServlet extends HttpServlet {
-    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODc2MiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImNvbnN1bHRvciJ9.m5W9nnBnl9hWrz7gzeVch3dCRuIhCAz7l5cCovvYEpY"; // Cambia por tu token
+    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODc3OSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImNvbnN1bHRvciJ9.qE0HUxQxuQ7d_hXRRnrQ5YLxJkemxl5gT3-yz8TkRbk"; // Cambia por tu token
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
