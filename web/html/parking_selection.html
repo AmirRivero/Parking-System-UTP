@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección Visual de Estacionamiento</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --available: #2ecc71;
+            --occupied: #e74c3c;
+            --selected: #f1c40f;
+            --aisle: #95a5a6;
+            --road: #7f8c8d;
+            --text-dark: #34495e;
+            --text-light: #ecf0f1;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--text-dark);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .parking-grid {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        
+        .parking-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+        
+        .parking-row {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;  /* Permite que los items fluyan a nueva línea */
+        }
+        
+        .entrance-exit {
+            width: auto;  /* Cambiar de 60px fijo */
+            min-width: 60px;
+            padding: 0 10px;
+            background-color: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-weight: bold;
+            margin-left: 10px;
+            border-radius: 5px;
+        }
+        
+        .parking-spot {
+            width: 40px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+            font-size: 12px;
+        }
+        
+        .spot-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: bold;
+            color: inherit;
+        }
+        
+        .parking-spot {
+            position: relative;
+        }
+        
+        .available {
+            background-color: var(--available);
+            color: var(--text-dark);
+            border: 1px solid #27ae60;
+        }
+        
+        .occupied {
+            background-color: var(--occupied);
+            color: var(--text-light);
+            cursor: not-allowed;
+            border: 1px solid #c0392b;
+        }
+        
+        .selected {
+            background-color: var(--selected);
+            color: var(--text-dark);
+            transform: scale(1.05);
+            box-shadow: 0 0 0 2px var(--secondary);
+            border: 1px solid #f39c12;
+        }
+        
+        .aisle {
+            background-color: var(--aisle);
+            min-width: 20px;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .road {
+            background-color: var(--road);
+            height: 40px;
+            width: 100%;  /* Cambiar de min-width a width */
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .road::before, .road::after {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 20px;
+            background-color: var(--aisle);
+        }
+        
+        .road::before {
+            left: -20px;
+        }
+        
+        .road::after {
+            right: -20px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .selection-info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .parking-spot {
+                width: 30px;
+                height: 45px;
+                font-size: 10px;
+            }
+            
+            .spot-number {
+                font-size: 7px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Selecciona tu Estacionamiento</h1>
+        
+        <div class="controls">
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--available);"></div>
+                    <span>Disponible</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--occupied);"></div>
+                    <span>Ocupado</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--selected);"></div>
+                    <span>Seleccionado</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--aisle);"></div>
+                    <span>Pasillo</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: var(--road);"></div>
+                    <span>Carril</span>
+                </div>
+            </div>
+            
+            <button id="confirmBtn" onclick="confirmSelection()" disabled>Confirmar Selección</button>
+        </div>
+        
+        <div class="parking-grid">
+            <div class="parking-rows">
+                <div class="road">CARRIL PRINCIPAL</div>
+                <!-- Fila 1 -->
+                <div class="parking-row">
+                    <div class="parking-spot available" data-spot="1"><span class="spot-number">1</span></div>
+                    <div class="parking-spot available" data-spot="2"><span class="spot-number">2</span></div>
+                    <div class="parking-spot available" data-spot="3"><span class="spot-number">3</span></div>
+                    <div class="parking-spot available" data-spot="4"><span class="spot-number">4</span></div>
+                    <div class="parking-spot available" data-spot="5"><span class="spot-number">5</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                    <div class="parking-spot available" data-spot="6"><span class="spot-number">6</span></div>
+                    <div class="parking-spot available" data-spot="7"><span class="spot-number">7</span></div>
+                    <div class="parking-spot available" data-spot="8"><span class="spot-number">8</span></div>
+                    <div class="parking-spot available" data-spot="9"><span class="spot-number">9</span></div>
+                    <div class="parking-spot available" data-spot="10"><span class="spot-number">10</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                    <div class="parking-spot available" data-spot="11"><span class="spot-number">11</span></div>
+                    <div class="parking-spot occupied" data-spot="12"><span class="spot-number">12</span></div>
+                    <div class="parking-spot available" data-spot="13"><span class="spot-number">13</span></div>
+                    <div class="parking-spot available" data-spot="14"><span class="spot-number">14</span></div>
+                    <div class="parking-spot occupied" data-spot="15"><span class="spot-number">15</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                    <div class="parking-spot available" data-spot="16"><span class="spot-number">16</span></div>
+                    <div class="parking-spot available" data-spot="17"><span class="spot-number">17</span></div>
+                    <div class="parking-spot available" data-spot="18"><span class="spot-number">18</span></div>
+                    <div class="parking-spot occupied" data-spot="19"><span class="spot-number">19</span></div>
+                    <div class="parking-spot available" data-spot="20"><span class="spot-number">20</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                </div>
+                
+                <!-- Carril principal -->
+                <div class="road">CARRIL PRINCIPAL</div>
+                
+                <!-- Fila 2 -->
+                <div class="parking-row">
+                    <div class="parking-spot available" data-spot="1"><span class="spot-number">1</span></div>
+                    <div class="parking-spot available" data-spot="2"><span class="spot-number">2</span></div>
+                    <div class="parking-spot available" data-spot="3"><span class="spot-number">3</span></div>
+                    <div class="parking-spot available" data-spot="4"><span class="spot-number">4</span></div>
+                    <div class="parking-spot available" data-spot="5"><span class="spot-number">5</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                    <div class="parking-spot available" data-spot="6"><span class="spot-number">6</span></div>
+                    <div class="parking-spot occupied" data-spot="7"><span class="spot-number">7</span></div>
+                    <div class="parking-spot available" data-spot="8"><span class="spot-number">8</span></div>
+                    <div class="parking-spot available" data-spot="9"><span class="spot-number">9</span></div>
+                    <div class="parking-spot available" data-spot="10"><span class="spot-number">10</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                    <div class="parking-spot available" data-spot="11"><span class="spot-number">11</span></div>
+                    <div class="parking-spot occupied" data-spot="12"><span class="spot-number">12</span></div>
+                    <div class="parking-spot available" data-spot="13"><span class="spot-number">13</span></div>
+                    <div class="parking-spot available" data-spot="14"><span class="spot-number">14</span></div>
+                    <div class="parking-spot occupied" data-spot="15"><span class="spot-number">15</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                    <div class="parking-spot available" data-spot="16"><span class="spot-number">16</span></div>
+                    <div class="parking-spot occupied" data-spot="17"><span class="spot-number">17</span></div>
+                    <div class="parking-spot available" data-spot="18"><span class="spot-number">18</span></div>
+                    <div class="parking-spot occupied" data-spot="19"><span class="spot-number">19</span></div>
+                    <div class="parking-spot available" data-spot="20"><span class="spot-number">20</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                </div>
+                
+                <!-- Carril secundario -->
+                <div class="road">CARRIL SECUNDARIO</div>
+                
+                <!-- Fila 3 -->
+                <div class="parking-row">
+                    <div class="parking-spot available" data-spot="1"><span class="spot-number">1</span></div>
+                    <div class="parking-spot available" data-spot="2"><span class="spot-number">2</span></div>
+                    <div class="parking-spot occupied" data-spot="3"><span class="spot-number">3</span></div>
+                    <div class="parking-spot available" data-spot="4"><span class="spot-number">4</span></div>
+                    <div class="parking-spot available" data-spot="5"><span class="spot-number">5</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                    <div class="parking-spot available" data-spot="6"><span class="spot-number">6</span></div>
+                    <div class="parking-spot available" data-spot="7"><span class="spot-number">7</span></div>
+                    <div class="parking-spot available" data-spot="8"><span class="spot-number">8</span></div>
+                    <div class="parking-spot available" data-spot="9"><span class="spot-number">9</span></div>
+                    <div class="parking-spot available" data-spot="10"><span class="spot-number">10</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                    <div class="parking-spot available" data-spot="11"><span class="spot-number">11</span></div>
+                    <div class="parking-spot occupied" data-spot="12"><span class="spot-number">12</span></div>
+                    <div class="parking-spot occupied" data-spot="13"><span class="spot-number">13</span></div>
+                    <div class="parking-spot available" data-spot="14"><span class="spot-number">14</span></div>
+                    <div class="parking-spot occupied" data-spot="15"><span class="spot-number">15</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                    <div class="parking-spot available" data-spot="16"><span class="spot-number">16</span></div>
+                    <div class="parking-spot available" data-spot="17"><span class="spot-number">17</span></div>
+                    <div class="parking-spot available" data-spot="18"><span class="spot-number">18</span></div>
+                    <div class="parking-spot occupied" data-spot="19"><span class="spot-number">19</span></div>
+                    <div class="parking-spot available" data-spot="20"><span class="spot-number">20</span></div>
+                    <div class="aisle">↕</div>
+                    <div class="aisle">↕</div>
+                </div>
+                <div class="road">CARRIL PRINCIPAL</div>
+            </div>
+            
+            <div class="entrance-exit">ENTRADA/ SALIDA</div>
+        </div>
+        
+        <div class="selection-info" id="selectionInfo">
+            <p>No has seleccionado ningún espacio.</p>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <label for="phoneNumber">Número de Teléfono:</label>
+            <input type="text" id="phoneNumber" placeholder="Ingresa tu número de teléfono">
+        </div>
+        <button onclick="saveReservation()">Guardar Reserva</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const parkingSpots = document.querySelectorAll('.parking-spot:not(.occupied)');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const selectionInfo = document.getElementById('selectionInfo');
+            
+            let selectedSpot = null;
+            
+            // Manejar selección de espacios
+            parkingSpots.forEach(spot => {
+                spot.addEventListener('click', function() {
+                    // Deseleccionar cualquier espacio previo
+                    document.querySelectorAll('.parking-spot').forEach(s => {
+                        s.classList.remove('selected');
+                    });
+                    
+                    // Seleccionar este espacio
+                    this.classList.add('selected');
+                    selectedSpot = this.getAttribute('data-spot');
+                    
+                    // Actualizar información
+                    selectionInfo.innerHTML = `
+                        <h3>Espacio seleccionado: #${selectedSpot}</h3>
+                        <p>Ubicación: Fila ${Math.ceil(selectedSpot/10)} | Posición ${selectedSpot % 10 || 10}</p>
+                        <p>Estado: Disponible</p>
+                    `;
+                    
+                    // Habilitar botón de confirmación
+                    confirmBtn.disabled = false;
+                });
+            });
+            
+            // Manejar confirmación
+            confirmBtn.addEventListener('click', function() {
+                if (selectedSpot) {
+                    // Guardar la selección en localStorage
+                    localStorage.setItem('selectedParkingSpot', selectedSpot);
+                    
+                    // Redirigir a schedule_selection.html
+                    window.location.href = 'schedule_selection.html';
+                }
+            });
+        });
+
+        function saveReservation() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const selectedSpot = 'A1'; // Ejemplo: espacio seleccionado
+            const selectedSchedules = ['10:00 AM - 12:00 PM']; // Ejemplo: horarios seleccionados
+
+            localStorage.setItem('selectedSpot', selectedSpot);
+            localStorage.setItem('selectedSchedules', JSON.stringify(selectedSchedules));
+            localStorage.setItem('phoneNumber', phoneNumber);
+
+            alert('Reserva guardada con éxito');
+            window.location.href = 'booking_confirmation.html';
+        }
+    </script>
+</body>
+</html>

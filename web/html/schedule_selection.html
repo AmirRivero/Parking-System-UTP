@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Selección de Horario</title>
+    <style>
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .time-slot {
+            padding: 15px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .time-slot:hover {
+            background: #f0f0f0;
+        }
+        .time-slot.selected {
+            border-color: #2196F3;
+            background: #e3f2fd;
+        }
+        .nav-buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .nav-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            background: #2196F3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Escoger Horario</h1>
+    
+    <div class="time-slots">
+        <!-- Horarios generados dinámicamente con JavaScript -->
+    </div>
+
+    <div class="nav-buttons">
+        <a href="parking_selection.html" class="nav-button">← Volver</a>
+        <button id="confirmBtn" class="nav-button" disabled>Confirmar Horario</button>
+    </div>
+
+    <script>
+        // Generar horarios de 8:00 AM a 8:00 PM
+        const timeSlots = document.querySelector('.time-slots');
+        const confirmBtn = document.getElementById('confirmBtn');
+        let selectedTimes = [];
+
+        for (let hour = 8; hour <= 20; hour++) {
+            const timeSlot = document.createElement('div');
+            timeSlot.className = 'time-slot';
+            timeSlot.textContent = `${hour}:00 - ${hour + 1}:00`;
+            
+            timeSlot.addEventListener('click', () => {
+                timeSlot.classList.toggle('selected');
+                
+                if(timeSlot.classList.contains('selected')) {
+                    selectedTimes.push(timeSlot.textContent);
+                } else {
+                    selectedTimes = selectedTimes.filter(t => t !== timeSlot.textContent);
+                }
+                
+                confirmBtn.disabled = selectedTimes.length === 0;
+                confirmBtn.textContent = selectedTimes.length > 0 
+                    ? `Confirmar (${selectedTimes.length} horarios)` 
+                    : 'Confirmar Horario';
+            });
+            
+            timeSlots.appendChild(timeSlot);
+        }
+
+        confirmBtn.addEventListener('click', () => {
+            if (selectedTimes.length > 0) {
+                localStorage.setItem('selectedSchedules', JSON.stringify(selectedTimes));
+                window.location.href = 'booking_confirmation.html';
+            }
+        });
+    </script>
+</body>
+</html>
