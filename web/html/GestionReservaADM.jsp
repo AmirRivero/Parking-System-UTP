@@ -162,7 +162,7 @@
   </a>
   <ul class="menu-sub">
     <li class="menu-item">
-      <a href="ReportesEstadisticas.jsp" class="menu-link">
+      <a href="ReportesEstadisticasADM.jsp" class="menu-link">
         <div data-i18n="Account">Reportes y Estadísticas</div>
       </a>
     </li>
