@@ -92,7 +92,7 @@
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings"> ver Reservas</div>
+                <div data-i18n="Account Settings"> Gestionar Reservas</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
@@ -165,7 +165,7 @@
   </a>
   <ul class="menu-sub">
     <li class="menu-item">
-      <a href="ReportesEstadisticas.jsp" class="menu-link">
+      <a href="ReportesEstadisticasADM.jsp" class="menu-link">
         <div data-i18n="Account">Reportes y Estadísticas</div>
       </a>
     </li>

@@ -135,7 +135,7 @@ public final class indexADM_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            <li class=\"menu-item\">\n");
       out.write("              <a href=\"javascript:void(0);\" class=\"menu-link menu-toggle\">\n");
       out.write("                <i class=\"menu-icon tf-icons bx bx-dock-top\"></i>\n");
-      out.write("                <div data-i18n=\"Account Settings\"> ver Reservas</div>\n");
+      out.write("                <div data-i18n=\"Account Settings\"> Gestionar Reservas</div>\n");
       out.write("              </a>\n");
       out.write("              <ul class=\"menu-sub\">\n");
       out.write("                <li class=\"menu-item\">\n");
@@ -208,7 +208,7 @@ public final class indexADM_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("  </a>\n");
       out.write("  <ul class=\"menu-sub\">\n");
       out.write("    <li class=\"menu-item\">\n");
-      out.write("      <a href=\"ReportesEstadisticas.jsp\" class=\"menu-link\">\n");
+      out.write("      <a href=\"ReportesEstadisticasADM.jsp\" class=\"menu-link\">\n");
       out.write("        <div data-i18n=\"Account\">Reportes y Estadísticas</div>\n");
       out.write("      </a>\n");
       out.write("    </li>\n");

@@ -90,7 +90,7 @@
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Reservas</div>
+                <div data-i18n="Account Settings">Gestionar Reservas</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
@@ -237,7 +237,7 @@
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
+                      <a class="dropdown-item" href="Login.html">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Cerrar Sesión</span>
                       </a>
